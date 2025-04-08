@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Click Me Surprise</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: 'Comic Sans MS', cursive, sans-serif;
+                background: #ffe7e7;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                overflow: hidden;
+            }
+            #mainContent {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 2rem;
+                background: linear-gradient(to right, #ffecd2, #fcb69f);
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 2;
+            }
+            h1 {
+                font-size: 3rem;
+                animation: glow 2s infinite alternate;
+            }
+            @keyframes glow {
+                from {
+                    text-shadow: 0 0 10px #ff9a9e;
+                }
+                to {
+                    text-shadow: 0 0 20px #fad0c4;
+                }
+            }
+            .message {
+                font-size: 1.5rem;
+                margin: 2rem;
+            }
+            img {
+                max-width: 300px;
+                border-radius: 20px;
+                margin: 1rem;
+            }
+            .video {
+                margin-top: 2rem;
+            }
+            canvas {
+                position: fixed;
+                pointer-events: none;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 1;
+            }
+            #startBtn,
+            #revealBtn {
+                font-size: 1.5rem;
+                padding: 1rem 2rem;
+                border: none;
+                border-radius: 20px;
+                background-color: #ff69b4;
+                color: white;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+                margin-top: 2rem;
+            }
+            #startBtn:hover,
+            #revealBtn:hover {
+                transform: scale(1.05);
+                background-color: #ff85c1;
+            }
+            #secretMessage {
+                font-size: 1.3rem;
+                color: #d63384;
+                margin-top: 1rem;
+                display: none;
+                background: #fff0f6;
+                padding: 1rem;
+                border-radius: 15px;
+                max-width: 80%;
+            }
+        </style>
+    </head>
+    <body>
+        <button id="startBtn">🎉 Click Me 🎉</button>
+
+        <div id="mainContent">
+            <canvas id="confetti"></canvas>
+            <h1>Happy Birthday, EDITAAAA!</h1>
+            <div class="message">
+                Wishing you a day filled with laughter, happiness, and unlimited
+                food!
+            </div>
+            <img src="birthday.jpeg" alt="Cute birthday image" />
+
+            <!-- Reveal Button -->
+            <button id="revealBtn">Pssstt, click mee</button>
+            <div id="secretMessage">
+                You’re the best, never forget it! 💫 anddd<br />
+                Please open the subway tote bag that i gave you 😁
+            </div>
+
+            <audio id="music" autoplay loop>
+                <source
+                    src="https://www.bensound.com/bensound-music/bensound-buddy.mp3"
+                    type="audio/mp3"
+                />
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+
+        <script>
+            const startBtn = document.getElementById('startBtn');
+            const mainContent = document.getElementById('mainContent');
+            const music = document.getElementById('music');
+            const revealBtn = document.getElementById('revealBtn');
+            const secretMessage = document.getElementById('secretMessage');
+
+            startBtn.addEventListener('click', () => {
+                startBtn.style.display = 'none';
+                mainContent.style.display = 'flex';
+                music.play();
+                launchConfetti();
+            });
+
+            revealBtn.addEventListener('click', () => {
+                secretMessage.style.display = 'block';
+                revealBtn.disabled = true;
+                revealBtn.textContent = 'Thankss for clicking mee! 🙏';
+            });
+
+            function launchConfetti() {
+                const canvas = document.getElementById('confetti');
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                let confetti = [];
+
+                function resize() {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                }
+
+                function createConfetti() {
+                    for (let i = 0; i < 300; i++) {
+                        confetti.push({
+                            x: Math.random() * width,
+                            y: Math.random() * height - height,
+                            r: Math.random() * 6 + 2,
+                            d: Math.random() * 2 + 1,
+                            color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+                        });
+                    }
+                }
+
+                function draw() {
+                    ctx.clearRect(0, 0, width, height);
+                    for (let i = 0; i < confetti.length; i++) {
+                        let c = confetti[i];
+                        ctx.beginPath();
+                        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+                        ctx.fillStyle = c.color;
+                        ctx.fill();
+                        c.y += c.d;
+                        if (c.y > height) c.y = 0;
+                    }
+                    requestAnimationFrame(draw);
+                }
+
+                window.addEventListener('resize', resize);
+                resize();
+                createConfetti();
+                draw();
+            }
+        </script>
+    </body>
+</html>
