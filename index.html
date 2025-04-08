@@ -14,10 +14,10 @@
                 font-family: 'Comic Sans MS', cursive, sans-serif;
                 background: #ffe7e7;
                 display: flex;
-                justify-content: center;
+                flex-direction: column;
                 align-items: center;
-                height: 100vh;
-                overflow: hidden;
+                justify-content: center;
+                min-height: 100vh;
             }
 
             #mainContent {
@@ -27,13 +27,10 @@
                 text-align: center;
                 padding: 1rem;
                 background: linear-gradient(to right, #ffecd2, #fcb69f);
-                width: 100vw;
-                height: 100vh;
-                position: fixed;
-                top: 0;
-                left: 0;
+                width: 100%;
+                min-height: 100vh;
+                position: relative;
                 z-index: 2;
-                overflow-y: auto;
             }
 
             h1 {
@@ -153,6 +150,7 @@
                 mainContent.style.display = 'flex';
                 music.play();
                 launchConfetti();
+                window.scrollTo(0, 0); // Ensure top on mobile
             });
 
             revealBtn.addEventListener('click', () => {
